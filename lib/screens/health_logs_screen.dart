@@ -30,11 +30,7 @@ const tempOptions = ['normal', 'fever', 'low', 'custom'];
 const spo2Options = ['normal', 'low', 'custom'];
 
 final moodFilterProvider = riverpod.StateProvider<String?>((ref) => null);
-final healthLogListProvider = riverpod.Provider<List<HealthLog>>((ref) {
-  // For now, just return an empty list; you can connect this to your Provider logic or a StateNotifier
-  // Replace with actual logic as needed
-  return [];
-});
+final healthLogListProvider = healthLogNotifierProvider;
 final filteredLogsProvider = riverpod.Provider<List<HealthLog>>((ref) {
   final logs = ref.watch(healthLogListProvider);
   final filter = ref.watch(moodFilterProvider);

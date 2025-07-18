@@ -28,12 +28,21 @@ class SharedPrefsService {
     await prefs.setInt(_keyAge, age);
     await prefs.setString(_keyCondition, condition);
     await prefs.setBool(_keyReminder, reminder);
+    debugPrint(
+      '[SharedPrefsService] Saved user data: name=$name, age=$age, condition=$condition, reminder=$reminder',
+    );
+    await debugStoredData();
   }
 
   // Load user data (single user)
   static Future<Map<String, dynamic>?> getUserData() async {
     final prefs = await SharedPreferences.getInstance();
-    if (!prefs.containsKey(_keyName)) return null;
+    if (!prefs.containsKey(_keyName)) {
+      debugPrint(
+        '[SharedPrefsService] No user data found in SharedPreferences.',
+      );
+      return null;
+    }
 
     try {
       // Get raw values safely with null checks
@@ -45,6 +54,9 @@ class SharedPrefsService {
       final reminderValue = prefs.containsKey(_keyReminder)
           ? prefs.get(_keyReminder)
           : null;
+      debugPrint(
+        '[SharedPrefsService] Loaded user data: name=$nameValue, age=$ageValue, condition=$conditionValue, reminder=$reminderValue',
+      );
       return {
         'name': nameValue is String ? nameValue : nameValue?.toString(),
         'age': ageValue is int

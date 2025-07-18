@@ -52,63 +52,57 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // MultiProvider allows for multiple providers in the widget tree
-    return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => MedicationProvider())],
-      child: Scaffold(
-        body: _selectedIndex < _pages.length
-            ? _pages[_selectedIndex] // Show the selected page
-            : const Center(child: Text("Invalid tab selected")),
-        bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: Color(0xFF1E88E5), // Selected tab color
-          unselectedItemColor: Colors.grey, // Unselected tab color
-          backgroundColor: Colors.white, // Nav bar background
-          currentIndex: _selectedIndex, // Current tab
-          onTap: _onItemTapped, // Handle tab tap
-          type: BottomNavigationBarType.fixed, // Fixed tabs
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.medication),
-              label: 'Meds',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.health_and_safety),
-              label: 'Tips',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today),
-              label: 'Appointments',
-            ),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-            BottomNavigationBarItem(icon: Icon(Icons.note_alt), label: 'Logs'),
-          ],
-        ),
-        // Floating action button for test notification (only on Home tab)
-        floatingActionButton: _selectedIndex == 0
-            ? FloatingActionButton(
-                onPressed: () async {
-                  // Send a test notification using flutter_local_notifications
-                  await app_main.flutterLocalNotificationsPlugin.show(
-                    0,
-                    'Test Notification',
-                    'This is a test notification',
-                    const NotificationDetails(
-                      android: AndroidNotificationDetails(
-                        'test_channel',
-                        'Test Channel',
-                        channelDescription: 'Channel for test notifications',
-                        importance: Importance.max,
-                        priority: Priority.high,
-                      ),
-                    ),
-                  );
-                },
-                child: const Icon(Icons.notifications),
-                tooltip: 'Send Test Notification',
-              )
-            : null,
+    // Return the Scaffold directly, using the top-level providers
+    return Scaffold(
+      body: _selectedIndex < _pages.length
+          ? _pages[_selectedIndex] // Show the selected page
+          : const Center(child: Text("Invalid tab selected")),
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Color(0xFF1E88E5), // Selected tab color
+        unselectedItemColor: Colors.grey, // Unselected tab color
+        backgroundColor: Colors.white, // Nav bar background
+        currentIndex: _selectedIndex, // Current tab
+        onTap: _onItemTapped, // Handle tab tap
+        type: BottomNavigationBarType.fixed, // Fixed tabs
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.medication), label: 'Meds'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.health_and_safety),
+            label: 'Tips',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today),
+            label: 'Appointments',
+          ),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+          BottomNavigationBarItem(icon: Icon(Icons.note_alt), label: 'Logs'),
+        ],
       ),
+      // Floating action button for test notification (only on Home tab)
+      floatingActionButton: _selectedIndex == 0
+          ? FloatingActionButton(
+              onPressed: () async {
+                // Send a test notification using flutter_local_notifications
+                await app_main.flutterLocalNotificationsPlugin.show(
+                  0,
+                  'Test Notification',
+                  'This is a test notification',
+                  const NotificationDetails(
+                    android: AndroidNotificationDetails(
+                      'test_channel',
+                      'Test Channel',
+                      channelDescription: 'Channel for test notifications',
+                      importance: Importance.max,
+                      priority: Priority.high,
+                    ),
+                  ),
+                );
+              },
+              child: const Icon(Icons.notifications),
+              tooltip: 'Send Test Notification',
+            )
+          : null,
     );
   }
 }
